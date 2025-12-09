@@ -1,0 +1,8 @@
+{
+  "typeCheckingMode": "basic",
+  "diagnosticSeverityOverrides": {
+    "reportUnusedImport": "none",
+    "reportUnusedVariable": "none",
+    "reportUnusedFunction": "none"
+  }
+}

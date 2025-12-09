@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+  <apiVersion>60.0</apiVersion>
+  <label>SchedulingMeetingTaskCreator</label>
+  <processMetadataValues>
+    <name>BuilderType</name>
+    <value>
+      <stringValue>LightningFlowBuilder</stringValue>
+    </value>
+  </processMetadataValues>
+  <processType>AutoLaunchedFlow</processType>
+  <startElementReference>start</startElementReference>
+  <start>
+    <connector>
+      <targetReference>post_start</targetReference>
+    </connector>
+    <object>Event</object>
+    <recordTriggerType>Create</recordTriggerType>
+    <triggerType>RecordAfterSave</triggerType>
+<filters>
+  <field>Event.Type</field>
+  <operator>EqualTo</operator>
+  <value>Scheduling Meeting</value>
+</filters>
+  </start>
+  <stages/>
+  <status>Active</status>
+  <decisions>
+    <name>post_start</name>
+    <label>post_start</label>
+    <defaultConnector>
+      <targetReference>step1</targetReference>
+    </defaultConnector>
+  </decisions>
+  <createRecords>
+    <name>step1</name>
+    <label>step1</label>
+    <connector>
+      <targetReference>done</targetReference>
+    </connector>
+    <inputAssignments/>
+    <object>Task</object>
+<fieldValues>
+  <name>Subject</name>
+  <stringValue>Follow-up: Scheduling Meeting</stringValue>
+</fieldValues>
+<fieldValues>
+  <name>Status</name>
+  <stringValue>Not Started</stringValue>
+</fieldValues>
+<fieldValues>
+  <name>Priority</name>
+  <stringValue>Normal</stringValue>
+</fieldValues>
+<fieldValues>
+  <name>OwnerId</name>
+  <value>
+    <elementReference>$Record.OwnerId</elementReference>
+  </value>
+</fieldValues>
+<fieldValues>
+  <name>WhatId</name>
+  <value>
+    <elementReference>$Record.Application__c</elementReference>
+  </value>
+</fieldValues>
+<fieldValues>
+  <name>ActivityDate</name>
+  <value>
+    <formula>TODAY()+1</formula>
+  </value>
+</fieldValues>
+    <storeOutputAutomatically>true</storeOutputAutomatically>
+  </createRecords>
+</Flow>

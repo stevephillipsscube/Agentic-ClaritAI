@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+  <apiVersion>60.0</apiVersion>
+  <label>CreateTaskOnSchedulingMeeting</label>
+  <processMetadataValues>
+    <name>BuilderType</name>
+    <value>
+      <stringValue>LightningFlowBuilder</stringValue>
+    </value>
+  </processMetadataValues>
+  <processType>AutoLaunchedFlow</processType>
+  <startElementReference>start</startElementReference>
+  <start>
+    <connector>
+      <targetReference>post_start</targetReference>
+    </connector>
+    <object>Event</object>
+    <recordTriggerType>Create</recordTriggerType>
+    <triggerType>RecordAfterSave</triggerType>
+    <filters>
+      <field>Type</field>
+      <operator>EqualTo</operator>
+      <value>Scheduling Meeting</value>
+    </filters>
+  </start>
+  <stages/>
+  <status>Active</status>
+  <decisions>
+    <name>post_start</name>
+    <label>post_start</label>
+    <defaultConnector>
+      <targetReference>step1</targetReference>
+    </defaultConnector>
+  </decisions>
+
+  <recordCreates>
+    <name>step1</name>
+    <label>Follow-up: Scheduling Meeting</label>
+    
+    <inputAssignments>
+      <field>Subject</field>
+      <isLiteral>true</isLiteral>
+      <value>Follow-up: Scheduling Meeting</value>
+    </inputAssignments>
+    <inputAssignments>
+      <field>OwnerId</field>
+      <value>{!$Record.OwnerId}</value>
+    </inputAssignments>
+    <inputAssignments>
+      <field>WhatId</field>
+      <value>{!$Record.Application__c}</value>
+    </inputAssignments>
+    <inputAssignments>
+      <field>Status</field>
+      <isLiteral>true</isLiteral>
+      <value>Not Started</value>
+    </inputAssignments>
+    <inputAssignments>
+      <field>Priority</field>
+      <isLiteral>true</isLiteral>
+      <value>Normal</value>
+    </inputAssignments>
+    <object>Task</object>
+  </recordCreates>
+</Flow>

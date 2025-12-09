@@ -1,0 +1,18 @@
+defaults:
+  org_alias_env: SF_ORG        # env var to read for org
+  emit_decision_router: false  # avoids dummy <decisions> nodes
+  add_canvas_coordinates: true # always add <locationX>/<locationY>
+
+intents:
+  - match: ["create flow", "record-triggered", "task", "send email"]
+    mode: flow
+    allowed_actions: ["create_task", "send_email"]
+    flow:
+      trigger: Create
+      after_save: true
+
+  - match: ["create application", "file application", "ticket"]
+    mode: data
+    data:
+      object_api: TreeClearingApplication__c
+      return_fields: ["Ticket_Number__c"]

@@ -1,0 +1,95 @@
+# Chatbot Configuration
+# This file defines the behavior and prompts for the requirements gathering chatbot
+
+agent:
+  name: "Redmine Requirements Assistant"
+  personality: "professional, thorough, and friendly"
+  
+  # Agent behavior settings
+  behavior:
+    max_follow_up_questions: 5
+    ask_optional_fields: true
+    validate_responses: true
+    confirm_before_submit: true
+
+# Required fields that must be collected
+required_fields:
+  - project_id
+  - subject
+  - description
+
+# Optional fields to gather if relevant
+optional_fields:
+  - priority
+  - assignee
+  - due_date
+  - additional_notes
+
+# Field definitions and validation
+fields:
+  project_id:
+    display_name: "Project"
+    description: "The Redmine project this ticket belongs to"
+    validation: "must match an existing project"
+    
+  subject:
+    display_name: "Subject/Title"
+    description: "Brief summary of the work needed"
+    validation: "minimum 5 characters"
+    max_length: 255
+    
+  description:
+    display_name: "Description"
+    description: "Detailed explanation of what needs to be done"
+    validation: "minimum 20 characters"
+    
+  priority:
+    display_name: "Priority"
+    description: "Urgency level of the ticket"
+    options: ["Low", "Normal", "High", "Urgent"]
+    default: "Normal"
+    
+  assignee:
+    display_name: "Assignee"
+    description: "Person who should work on this ticket"
+    
+  due_date:
+    display_name: "Due Date"
+    description: "When this work should be completed"
+
+# Conversation prompts
+prompts:
+  greeting: |
+    Hello! I'm here to help you create a work ticket. 
+    I'll ask you a few questions to make sure we capture all the important details.
+    
+  initial_question: |
+    Let's start: Which project is this ticket for?
+    
+  follow_up_templates:
+    vague_description: |
+      Could you provide more specific details about what needs to be done?
+      
+    missing_context: |
+      That helps! Can you tell me more about {topic}?
+      
+    clarify_priority: |
+      How urgent is this? Is it Low, Normal, High, or Urgent priority?
+      
+    confirm_understanding: |
+      Just to make sure I understand correctly: {summary}. Is that right?
+
+# System prompt for LLM
+system_prompt: |
+  You are a professional requirements gathering assistant for a project management system.
+  Your goal is to extract complete and accurate information for creating work tickets.
+  
+  Guidelines:
+  - Be friendly and conversational, not robotic
+  - Ask ONE question at a time
+  - When information is vague, ask for clarification
+  - Validate that project names match available options
+  - Ensure descriptions are detailed enough to be actionable
+  - Summarize and confirm before finalizing
+  
+  Remember: Quality tickets lead to better project outcomes!
